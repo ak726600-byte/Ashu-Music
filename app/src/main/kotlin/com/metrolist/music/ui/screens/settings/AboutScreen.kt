@@ -455,3 +455,87 @@ fun AboutScreen(
                                         favoriteSongVideoId = contributor.favoriteSongVideoId,
                                         coroutineScope = coroutineScope,
                                         snackbarHostState = snackbarHostState
+                                        playerConnection = playerConnection,
+                                        wannaPlayStr = wannaPlayStr,
+                                        yeahStr = yeahStr,
+                                        onCountUpdate = { clickCount = it }
+                                    )
+                                }
+                            )
+                        },
+                        title = { Text(text = contributor.name, fontWeight = FontWeight.SemiBold) },
+                        description = { Text(stringResource(contributor.roleRes)) },
+                        trailingContent = {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (contributor.sponsorUrl != null) {
+                                    Surface(
+                                        onClick = { uriHandler.openUri(contributor.sponsorUrl) },
+                                        shape = CircleShape,
+                                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                        modifier = Modifier.size(36.dp)
+                                    ) {
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.buymeacoffee),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(20.dp),
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                    }
+                                }
+                                Surface(
+                                    onClick = { uriHandler.openUri(contributor.githubUrl) },
+                                    shape = CircleShape,
+                                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.github),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(20.dp),
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            // Community & Info
+            Text(
+                text = "Community & Info",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(8.dp))
+            communityLinks.forEach { link ->
+                FilledTonalButton(
+                    onClick = { uriHandler.openUri(link.url) },
+                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                ) {
+                    Icon(painterResource(link.iconRes), contentDescription = null, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Text(stringResource(link.labelRes))
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
+            Spacer(Modifier.height(96.dp))
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
+    }
+}
